@@ -3,12 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
+// import NgxCanvasModule
+import { NgxCanvasModule } from 'ngx-canvas';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    NgxCanvasModule, // imports
   ],
   providers: [],
   bootstrap: [AppComponent]

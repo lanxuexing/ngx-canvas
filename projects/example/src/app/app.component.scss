@@ -19,3 +19,31 @@ h6 {
 p {
   margin: 0;
 }
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  button {
+    width: 180px;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 20px;
+    text-decoration: none;
+    background-image: linear-gradient(to right, #b0dc5e, #96c244) !important;
+    display: block;
+    color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  button:hover {
+    background: linear-gradient(to right,#a6d254,#8cb83a) !important;
+  }
+}
