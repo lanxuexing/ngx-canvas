@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
         top: 0,
         left: 0,
         width: 375,
-        height: 1234
+        height: 667
       }
     ];
     // draw text
@@ -111,9 +111,9 @@ export class AppComponent implements OnInit {
     ];
     // draw options
     this.options = {
-      width: 750,
-      height: 1234,
-      backgroundColor: '#7357FF',
+      width: 375,
+      height: 667,
+      backgroundColor: '#47b785',
       views: [
         ...imgs,
         ...txts,
