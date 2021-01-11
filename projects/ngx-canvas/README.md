@@ -63,7 +63,7 @@ Now you can simply use the `ngx-canvas` component and provide your custom option
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-import { NgxCanvasModule, DrawProps, ImageProps, TextProps, RectProps, LineProps } from 'ngx-canvas';
+import { DrawProps, ImageProps, TextProps, RectProps, LineProps } from 'ngx-canvas';
 
 @Component({
   selector: 'app-root',
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     // draw image
-    const imgs: ImageProps = [
+    const imgs: ImageProps[] = [
       {
         type: 'image',
         url: 'assets/images/bg.png',
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
       }
     ];
     // draw text
-    const txts: TextProps = [
+    const txts: TextProps[] = [
       {
         type: 'text',
         content: 'Have good time.',
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
       }
     ];
     // draw rect
-    const rects: RectProps = [
+    const rects: RectProps[] = [
       {
         type: 'rect',
         width: 375,
@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
       }
     ];
     // draw line
-    const lines: LineProps = [
+    const lines: LineProps[] = [
       {
         type: 'line',
         color: '#999',
@@ -127,12 +127,17 @@ export class AppComponent implements OnInit {
       }
     ];
     // draw options
-    this.options = [
-      ...imgs,
-      ...txts,
-      ...rects,
-      ...lines
-    ];
+    this.options = {
+      width: 750,
+      height: 1234,
+      backgroundColor: '#7357FF',
+      views: [
+        ...imgs,
+        ...txts,
+        ...rects,
+        ...lines
+      ]
+    };
   }
 
   drawComplete(dataUrl: string): void {
