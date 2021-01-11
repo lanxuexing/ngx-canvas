@@ -19,6 +19,10 @@
       "ngx-canvas": [
         "dist/ngx-canvas/ngx-canvas",
         "dist/ngx-canvas"
+      ],
+      "ngx-canvas/*": [
+        "dist/ngx-canvas/ngx-canvas/*",
+        "dist/ngx-canvas"
       ]
     }
   }
