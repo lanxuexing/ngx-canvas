@@ -11,7 +11,7 @@
 ```html
 <ngx-canvas
   width="375"
-  height="1234"
+  height="667"
   [options]="options"
   (drawComplete)="drawComplete($event)"
 ></ngx-canvas>
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
       {
         type: 'rect',
         width: 375,
-        height: 1234,
+        height: 667,
         x: 0,
         y: 280,
         backgroundColor: '#FFFFFF',
@@ -111,6 +111,7 @@ export class AppComponent implements OnInit {
     ];
     // draw options
     this.options = {
+      debug: true, // Used to debug the presentation canvas
       width: 375,
       height: 667,
       backgroundColor: '#47b785',
