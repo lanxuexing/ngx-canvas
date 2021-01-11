@@ -22,7 +22,7 @@ import {
   selector: 'ngx-canvas',
   template: `
     <canvas
-      [hidden]="drawData?.debug || false"
+      [hidden]="!options?.debug"
       [style.--width]="width"
       [style.--height]="height"
       #canvas>
