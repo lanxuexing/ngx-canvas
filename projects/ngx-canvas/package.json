@@ -1,6 +1,31 @@
 {
   "name": "ngx-canvas",
   "version": "0.0.1",
+  "license": "MIT",
+  "author": "lanxuexing",
+  "description": "A simple yet powerful canvas component for Angular (>=2) 🚀",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lanxuexing/ngx-canvas.git"
+  },
+  "keywords": [
+    "canvas",
+    "canvas poster",
+    "plugin",
+    "angular",
+    "angular8",
+    "angular 8",
+    "angular9",
+    "angular 9",
+    "angular10",
+    "angular 10",
+    "universal",
+    "ivy"
+  ],
+  "bugs": {
+    "url": "https://github.com/lanxuexing/ngx-canvas/issues"
+  },
+  "homepage": "https://github.com/lanxuexing/ngx-canvas#readme",
   "peerDependencies": {
     "@angular/common": "^10.1.6",
     "@angular/core": "^10.1.6"

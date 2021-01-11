@@ -54,7 +54,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.drawData.firstChange) {
+    if (!changes.options.firstChange) {
       this.initCanvas();
     }
   }
