@@ -41,23 +41,6 @@ import { NgxCanvasModule } from 'ngx-canvas';
 export class AppModule {}
 ```
 
-The `ngx-canvas` library can be loaded on demand using dynamic import. Webpack will load this library only when your animation gets rendered for the first time. Given the following code:
-
-```ts
-import { NgModule } from '@angular/core';
-import { NgxCanvasModule } from 'ngx-canvas';
-
-export function playerFactory() {
-  return import(/* webpackChunkName: 'ngx-canvas' */ 'ngx-canvas');
-}
-
-@NgModule({
-  imports: [
-    NgxCanvasModule.forRoot()
-  ]
-})
-export class AppModule {}
-```
 
 Now you can simply use the `ngx-canvas` component and provide your custom options via the `options` binding:
 
