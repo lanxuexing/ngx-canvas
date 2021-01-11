@@ -93,7 +93,6 @@ export class AppComponent implements OnInit {
 
   // Gets an data that is notified when the canvas is finished draw.
   drawComplete(dataUrl: string): void {
-    console.log(dataUrl);
     this.dataUrl = dataUrl;
   }
 
