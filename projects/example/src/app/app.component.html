@@ -1,5 +1,5 @@
 <div class="container">
   <!-- You can also use CSS variables, For example: style="--width: 375;--height: 667;" -->
-  <ngx-canvas [width]="375" [height]="667" [options]="options" (drawComplete)="drawComplete($event)"></ngx-canvas>
+  <ngx-canvas [width]="375" [height]="667" [options]="options" (drawComplete)="drawComplete($event)" #ngxCanvas></ngx-canvas>
   <button (click)="download()">download</button>
 </div>

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DrawProps, ImageProps, LineProps, RectProps, TextProps } from 'ngx-canvas';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DrawProps, ImageProps, LineProps, NgxCanvasComponent, PropagateProps, RectProps, TextProps } from 'ngx-canvas';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,8 @@ import { DrawProps, ImageProps, LineProps, RectProps, TextProps } from 'ngx-canv
 export class AppComponent implements OnInit {
   options: DrawProps;
   dataUrl: string;
+
+  @ViewChild('ngxCanvas') ngxCanvas: NgxCanvasComponent;
 
   ngOnInit(): void {
     const imgs: ImageProps[] = [
@@ -87,13 +89,17 @@ export class AppComponent implements OnInit {
         ...txts,
         ...lines,
         ...rects
-      ]
+      ],
+      extra: 'This is an additional optional any parameter that will be returned unchanged after the drawing is completed.'
     };
   }
 
   // Gets an data that is notified when the canvas is finished draw.
-  drawComplete(dataUrl: string): void {
+  drawComplete(propagate: PropagateProps): void {
+    const { dataUrl, canvas, ctx, extra } = propagate;
     this.dataUrl = dataUrl;
+    console.log('draw complete', propagate);
+    console.log('ngx-canvas comps', this.ngxCanvas);
   }
 
   // downloading canvas element to an image
