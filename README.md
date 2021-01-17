@@ -15,6 +15,7 @@
 - [API](#api)
 - [Events](#events)
 - [Types](#types)
+- [Demo](#demo)
 
 ## Quick example
 
@@ -254,3 +255,16 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 | ctx              | `CanvasRenderingContext2D`      | CanvasRenderingContext2D interface Object.          |
 | dataUrl          | `string`                        | Data URI containing a representation of the image.  |
 | extra            | `any`                           | Additional parameters are returned after drawing.   |
+
+
+## Demo
+
+You can clone this repo to your working copy and then launch the demo page in your local machine:
+
+```vim
+npm install
+npm run build:prod
+npm run start
+```
+
+The demo page server is listening on: http://localhost:4200
