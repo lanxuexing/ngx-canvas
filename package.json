@@ -31,7 +31,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build",
+    "build:prod": "ng build --prod",
     "build:docs": "ng build example --prod --base-href /ngx-canvas/",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "test": "ng test",

@@ -1,5 +1,10 @@
 # NgxCanvas
 
+[![npm](https://img.shields.io/npm/v/ngx-canvas.svg)][npm-badge-url]
+[![npm](https://img.shields.io/npm/dm/ngx-canvas.svg)][npm-badge-url]
+[![Build Status](https://travis-ci.com/lanxuexing/ngx-canvas.svg?branch=main)][ci-url]
+[![License](https://img.shields.io/npm/l/ngx-canvas.svg?sanitize=true)][license]
+
 ## Table of contents
 - [Quick example](#quick-example)
 - [Installation](#installation)
