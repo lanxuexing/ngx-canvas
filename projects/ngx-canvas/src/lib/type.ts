@@ -6,7 +6,8 @@ export interface DrawProps {
   height: number; // 生成图片高度
   backgroundColor?: string; // 背景颜色，默认：#ffffff
   debug?: boolean; // 是否开启调试模式, 默认：false
-  views: Array<any>; // 绘制核心数据
+  views: Array<any>; // 绘制核心数据,
+  extra?: any; // 外部传入的一些额外属性，原封不动的回传回去
 }
 
 /**
@@ -76,4 +77,14 @@ export interface RectProps {
   borderColor?: string; // 边框颜色
   borderRadius?: number; // 圆角
   opacity?: number; // 透明度
+}
+
+/**
+ * 画布绘制完成传播数据
+ */
+export interface PropagateProps {
+  canvas: HTMLCanvasElement; // 画布实例对象
+  ctx: CanvasRenderingContext2D; // 当前画布的2D画笔对象
+  dataUrl: string; // 当前画布的内容的一张图像
+  extra?: any; // 外部传入的一些额外属性，原封不动的回传回去
 }

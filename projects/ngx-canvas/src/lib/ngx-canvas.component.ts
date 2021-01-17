@@ -14,6 +14,7 @@ import {
   DrawProps,
   ImageProps,
   LineProps,
+  PropagateProps,
   RectProps,
   TextProps
 } from './type';
@@ -39,13 +40,12 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() options: DrawProps;
   @Input() width: number;
   @Input() height: number;
-  @Output() drawComplete: EventEmitter<string> = new EventEmitter();
+  @Output() drawComplete: EventEmitter<PropagateProps> = new EventEmitter();
   @ViewChild('canvas') canvasRef: ElementRef;
 
-  private canvas: HTMLCanvasElement;
-  private ctx: CanvasRenderingContext2D;
+  public canvas: HTMLCanvasElement;
+  public ctx: CanvasRenderingContext2D;
   private timer: number;
-  public debug: boolean;
 
   constructor() { }
 
@@ -60,9 +60,10 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   /**
-   * 初始化canvas画布
+   * @description 初始化canvas画布
+   * @links https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/canvas
    */
-  initCanvas(): void {
+  private initCanvas(): void {
     this.canvas = this.canvasRef.nativeElement;
     if (!this.options?.width || !this.options?.height || this.options?.views.length === 0) {
       return;
@@ -78,7 +79,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
    * @description 绘图
    * @links https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D
    */
-  async drawArr(): Promise<void> {
+  private async drawArr(): Promise<void> {
     // setps1：绘制背景色
     if (this.options.backgroundColor) {
       this.ctx.save();
@@ -101,7 +102,14 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
         this.drawLine(iterator);
       }
     }
-    this.drawComplete.emit(this.canvas.toDataURL('image/jpeg'));
+    // steps6：绘制完成向外发射数据和事件
+    const propagate: PropagateProps = {
+      canvas: this.canvas,
+      ctx: this.ctx,
+      dataUrl: this.canvas.toDataURL(),
+      extra: this.options?.extra
+    };
+    this.drawComplete.emit(propagate);
   }
 
   /**
@@ -308,7 +316,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
    * @description 动态计算文本长度
    * @param draweText 数组 | 对象
    */
-  getTextWidth(draweText: Array<any> | object): number {
+  private getTextWidth(draweText: Array<any> | object): number {
     let texts = [];
     if (Object.prototype.toString.call(draweText) === '[object Object]') {
       texts.push(draweText);

@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { NgxCanvasComponent } from './ngx-canvas.component';
 
 @NgModule({
   declarations: [NgxCanvasComponent],
-  imports: [
-  ],
+  imports: [CommonModule],
   exports: [NgxCanvasComponent]
 })
 export class NgxCanvasModule {
