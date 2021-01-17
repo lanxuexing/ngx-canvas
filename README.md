@@ -1,9 +1,12 @@
 # NgxCanvas
 
-[![npm](https://img.shields.io/npm/v/ngx-canvas.svg)][npm-badge-url]
-[![npm](https://img.shields.io/npm/dm/ngx-canvas.svg)][npm-badge-url]
-[![Build Status](https://travis-ci.com/lanxuexing/ngx-canvas.svg?branch=main)][ci-url]
-[![License](https://img.shields.io/npm/l/ngx-canvas.svg?sanitize=true)][license]
+<!-- Badges section here. -->
+<p align="center">
+  <a href="https://travis-ci.com/"><img src="https://travis-ci.com/lanxuexing/ngx-canvas.svg?branch=main" alt="Build Status"></a>
+  <a href="https://npmcharts.com/compare/ngx-canvas?minimal=true"><img src="https://img.shields.io/npm/dm/ngx-canvas.svg?sanitize=true" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/ngx-canvas"><img src="https://img.shields.io/npm/v/ngx-canvas.svg?sanitize=true" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/ngx-canvas"><img src="https://img.shields.io/npm/l/ngx-canvas.svg?sanitize=true" alt="License"></a>
+</p>
 
 ## Table of contents
 - [Quick example](#quick-example)
