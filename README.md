@@ -137,8 +137,6 @@ export class AppComponent implements OnInit {
 
   drawComplete(propagate: PropagateProps): void {
     const { dataUrl, canvas, ctx, extra } = propagate;
-    this.dataUrl = dataUrl;
-    console.log(propagate);
     // downloading canvas element to an image
     const a = document.createElement('a');
     document.body.appendChild(a);
@@ -169,7 +167,7 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 
 | @Output()        | Type                            | Required    | Description       |
 | ---------------- | ------------------------------- | ----------- | ----------------- |
-| drawComplete     | `(dataUrl: string) => unknown`  | optional    | Gets an data that is notified when the canvas is finished draw.      |
+| drawComplete     | `(propagate: PropagateProps) => unknown`  | optional    | Gets an data that is notified when the canvas is finished draw.      |
 
 
 ## Types
