@@ -303,4 +303,4 @@ npm run start
 
 The demo page server is listening on: http://localhost:4200
 
-- [online demo](lanxuexing.github.io/ngx-canvas/)
+- [online demo](https://lanxuexing.github.io/ngx-canvas/)
