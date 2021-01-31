@@ -1,5 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrawProps, ImageProps, LineProps, NgxCanvasComponent, PropagateProps, RectProps, TextProps } from 'ngx-canvas';
+import {
+  DrawProps,
+  ImageProps,
+  LineProps,
+  NgxCanvasComponent,
+  PropagateProps,
+  RectProps,
+  TextProps,
+  StepsProps,
+  Types
+} from 'ngx-canvas';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const imgs: ImageProps[] = [
       {
-        type: 'image',
+        type: Types.image,
         url: 'assets/bg.jpg',
         width: 375,
         height: 667,
@@ -42,7 +52,7 @@ export class AppComponent implements OnInit {
         color: '#FFF',
       },
       {
-        type: 'text',
+        type: Types.text,
         top: 340,
         left: 130,
         content: '01001',
@@ -53,7 +63,7 @@ export class AppComponent implements OnInit {
     ];
     const lines: LineProps[] = [
       {
-        type: 'line',
+        type: Types.line,
         startX: 160,
         startY: 430,
         endX: 230,
@@ -64,7 +74,7 @@ export class AppComponent implements OnInit {
     ];
     const rects: RectProps[] = [
       {
-        type: 'rect',
+        type: Types.rect,
         width: 20,
         height: 20,
         x: 186,
@@ -80,6 +90,18 @@ export class AppComponent implements OnInit {
         }
       }
     ];
+    const steps: StepsProps[] = [{
+      type: Types.steps,
+      circleX: 48,
+      circleY: 530,
+      lineHeight: 80,
+      lineCount: 3,
+      lineColor: '#FFF',
+      circleColor: '#FFF',
+      direction: 'ltr',
+      circleStyle: 'solid',
+      lineStyle: 'solid'
+    }];
     this.options = {
       width: 375,
       height: 667,
@@ -88,9 +110,10 @@ export class AppComponent implements OnInit {
         ...imgs,
         ...txts,
         ...lines,
-        ...rects
+        ...rects,
+        ...steps
       ],
-      extra: 'This is an additional optional any parameter that will be returned unchanged after the drawing is completed.'
+      extra: 'Extend the params and return after drawing.'
     };
   }
 

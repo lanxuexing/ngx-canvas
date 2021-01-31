@@ -57,7 +57,7 @@ Now you can simply use the `ngx-canvas` component and provide your custom option
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-import { DrawProps, ImageProps, TextProps, PropagateProps, RectProps, LineProps } from 'ngx-canvas';
+import { DrawProps, ImageProps, TextProps, PropagateProps, RectProps, LineProps, StepsProps, Types } from 'ngx-canvas';
 
 @Component({
   selector: 'app-root',
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
     // draw image
     const imgs: ImageProps[] = [
       {
-        type: 'image',
+        type: Types.image,
         url: 'assets/images/bg.png',
         top: 0,
         left: 0,
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
     // draw text
     const txts: TextProps[] = [
       {
-        type: 'text',
+        type: Types.text,
         content: 'Have good time.',
         top: 100,
         left: 100,
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
     // draw rect
     const rects: RectProps[] = [
       {
-        type: 'rect',
+        type: Types.rect,
         width: 375,
         height: 667,
         x: 0,
@@ -110,7 +110,7 @@ export class AppComponent implements OnInit {
     // draw line
     const lines: LineProps[] = [
       {
-        type: 'line',
+        type: Types.line,
         color: '#999',
         startX: 10,
         startY: 200,
@@ -120,6 +120,19 @@ export class AppComponent implements OnInit {
         lineCap: 'round'
       }
     ];
+    // draw steps
+    const steps: StepsProps[] = [{
+      type: Types.steps,
+      circleX: 48,
+      circleY: 530,
+      lineHeight: 80,
+      lineCount: 3,
+      lineColor: '#FFF',
+      circleColor: '#FFF',
+      direction: 'ltr',
+      circleStyle: 'solid',
+      lineStyle: 'solid'
+    }];
     // draw options
     this.options = {
       debug: true, // Used to debug the presentation canvas
@@ -130,9 +143,10 @@ export class AppComponent implements OnInit {
         ...imgs,
         ...txts,
         ...rects,
-        ...lines
+        ...lines,
+        ...steps
       ],
-      extra: 'This is an additional optional any parameter that will be returned unchanged after the drawing is completed.'
+      extra: 'Extend the params and return after drawing.'
     };
   }
 
@@ -247,6 +261,26 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 | borderRadius     | `number`          | optional    | Radius of rectangle's border.                       | 0                    |
 | opacity          | `number`          | optional    | Rect transparency.                                  | 1                    |
 
+
+---
+
+| StepsProps       | Type              | Required    | Description                                         | Default              |
+| ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
+| type             | `string`          | required    | Type of drawing.                                    | Fixed value 'steps'  |
+| circleX          | `number`          | required    | Horizontal coordinate of the arc's center.          | null                 |
+| circleY          | `number`          | required    | Vertical coordinate of the arc's center.            | null                 |
+| lineHeight       | `number`          | required    | Height number of line.                              | null                 |
+| lineCount        | `number`          | required    | Total number of line.                               | 1                    |
+| circleRadius     | `number`          | optional    | Text string to render into the context.             | 5                    |
+| circleLineWidth  | `number`          | optional    | Sets the thickness of lines.                        | 1                    |
+| circleStyle      | `string`          | optional    | Sets the line dash pattern used when stroking lines.| 'dashed'             |
+| circleColor      | `string`          | optional    | Specifies the color to use for the strokes.         | '#000'               |
+| lineWidth        | `string`          | optional    | Sets the thickness of lines.                        | 1                    |
+| lineColor        | `string`          | optional    | Specifies the color to use for the strokes.         | '#000'               |
+| lineStyle        | `string`          | optional    | Radius of rectangle's border.                       | 'solid'              |
+| lineDash         | `number[]`        | optional    | Sets the line dash pattern used when stroking lines.| [2,2]                |
+| direction        | `string`          | optional    | Specifies the direction of steps.                   | 'ttb'                |
+
 ---
 
 | PropagateProps   | Type                            | Description                                         |
@@ -268,3 +302,5 @@ npm run start
 ```
 
 The demo page server is listening on: http://localhost:4200
+
+- [online demo](lanxuexing.github.io/ngx-canvas/)
