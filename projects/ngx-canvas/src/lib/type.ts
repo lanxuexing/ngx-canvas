@@ -14,7 +14,7 @@ export interface DrawProps {
  * 绘制图片数据对象
  */
 export interface ImageProps {
-  type: string; // 类型
+  type: string | Types; // 类型
   url: string; // 图片地址 支持远程图片 & 本地图片：require('./assets/x.png')
   top: number; // 图片距离顶部距离
   left: number; // 图片距离左边距离
@@ -29,7 +29,7 @@ export interface ImageProps {
  * 绘制文本数据对象
  */
 export interface TextProps {
-  type: string; // 类型
+  type: string | Types; // 类型
   top: number; // 文字距离顶部距离
   left: number; // 文字距离左边距离
   content: string; // 文字内容
@@ -50,7 +50,7 @@ export interface TextProps {
  * 绘制线段数据对象
  */
 export interface LineProps {
-  type: string; // 类型
+  type: string | Types; // 类型
   startX: number; // 开始坐标X
   startY: number; // 开始坐标Y
   endX: number; // 结束坐标X
@@ -64,7 +64,7 @@ export interface LineProps {
  * 绘制矩形数据对象
  */
 export interface RectProps {
-  type: string; // 类型
+  type: string | Types; // 类型
   width: number; // 矩形宽度
   height: number; // 矩形高度
   x: number; // 开始坐标X
@@ -77,6 +77,37 @@ export interface RectProps {
   borderColor?: string; // 边框颜色
   borderRadius?: number; // 圆角
   opacity?: number; // 透明度
+}
+
+/**
+ * 绘制步骤条数据对象
+ */
+export interface StepsProps {
+  type: string | Types; // 类型
+  circleX: number; // 圆心X轴坐标
+  circleY: number; // 圆心Y轴坐标
+  lineHeight: number; // 线段的高度
+  lineCount: number; // 线段的数量
+  circleRadius?: number; // 圆的半径
+  circleLineWidth?: number; // 圆的画笔宽度
+  circleStyle?: 'dashed' | 'solid'; // 圆的样式
+  circleColor?: string; // 圆的画笔颜色
+  lineWidth?: number; // 线段的宽度
+  lineColor?: string; // 线段的样式
+  lineStyle?: 'dashed' | 'solid'; // 线段的样式
+  lineDash?: number[]; // 虚线段间距
+  direction?: string; // 方向
+}
+
+/**
+ * 绘制类型
+ */
+export enum Types {
+  'image',
+  'text',
+  'line',
+  'rect',
+  'steps'
 }
 
 /**

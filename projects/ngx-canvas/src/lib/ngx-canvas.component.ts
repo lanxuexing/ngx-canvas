@@ -16,7 +16,9 @@ import {
   LineProps,
   PropagateProps,
   RectProps,
-  TextProps
+  StepsProps,
+  TextProps,
+  Types
 } from './type';
 
 @Component({
@@ -54,7 +56,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.options.firstChange) {
+    if (changes?.options && !changes.options.firstChange) {
       this.initCanvas();
     }
   }
@@ -88,18 +90,21 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.ctx.restore();
     }
     for (const iterator of this.options.views) {
-      if (iterator.type === 'image') {
+      if (iterator.type === 'image' || iterator.type === Types.image) {
         // setps2：绘制图片
         await this.drawImg(iterator);
-      } else if (iterator.type === 'text') {
+      } else if (iterator.type === 'text' || iterator.type === Types.text) {
         // setps3：绘制文字
         this.drawText(iterator);
-      } else if (iterator.type === 'rect') {
+      } else if (iterator.type === 'rect' || iterator.type === Types.rect) {
         // setps4：绘制矩形
         this.drawRect(iterator);
-      } else if (iterator.type === 'line') {
+      } else if (iterator.type === 'line' || iterator.type === Types.line) {
         // steps5：绘制线段
         this.drawLine(iterator);
+      } else if (iterator.type === 'steps' || iterator.type === Types.steps) {
+         // steps6：绘制步骤条
+         this.drawSteps(iterator);
       }
     }
     // steps6：绘制完成向外发射数据和事件
@@ -310,6 +315,101 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
     if (text) {
       this.drawText(Object.assign(text, { x: textX, y: textY }));
     }
+  }
+
+  /**
+   * @description 绘制步骤条
+   * @links https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/arc
+   * @param circleX 圆心x轴坐标，距离画布左边的距离
+   * @param circleY 圆心x轴坐标，距离画布顶部的距离
+   * @param circleRadius 圆的半径
+   * @param circleLineWidth 圆的画笔宽度
+   * @param circleStyle 圆的样式：dashed 空心  solid 实心
+   * @param circleColor 圆的画笔颜色
+   * @param lineWidth 线段的宽度
+   * @param lineHeight 线段的高度
+   * @param lineColor 线段的画笔颜色
+   * @param lineDash 线段的样式
+   * @param lineCount 线段的数量
+   * @param direction 方向
+   */
+  drawSteps(data: StepsProps): void {
+    const {
+      circleX, circleY, circleRadius = 5, circleLineWidth = 1, circleStyle = 'dashed', circleColor = '#000',
+      lineWidth = 1, lineHeight, lineColor = '#000', lineStyle = 'solid', lineDash = [2, 2], lineCount = 1,
+      direction = 'ttb'
+    } = data;
+    this.ctx.save();
+    // steps1: 绘制小圆点
+    this.ctx.lineWidth = circleLineWidth;
+    if (circleStyle === 'dashed') {
+      this.ctx.strokeStyle = circleColor;
+    } else if (circleStyle === 'solid') {
+      this.ctx.fillStyle = circleColor;
+    }
+    if (direction === 'ttb') { // 从上到下
+      for (let n = 0; n <= lineCount; n++) {
+        this.ctx.beginPath();
+        this.ctx.arc(
+          circleX,
+          n * (2 * circleRadius) + n * lineHeight + circleRadius + circleY,
+          circleRadius,
+          0,
+          Math.PI * 2,
+          false
+        );
+        if (circleStyle === 'dashed') {
+          this.ctx.stroke(); // 空心
+        } else if (circleStyle === 'solid') {
+          this.ctx.fill(); // 实心
+        }
+        this.ctx.closePath();
+      }
+    } else if (direction === 'ltr') { // 从左到右
+      for (let n = 0; n <= lineCount; n++) {
+        this.ctx.beginPath();
+        this.ctx.arc(
+          n * (2 * circleRadius) + n * lineHeight + circleRadius + circleX,
+          circleY,
+          circleRadius,
+          0,
+          Math.PI * 2,
+          false
+        );
+        if (circleStyle === 'dashed') {
+          this.ctx.stroke(); // 空心
+        } else if (circleStyle === 'solid') {
+          this.ctx.fill(); // 实心
+        }
+        this.ctx.closePath();
+      }
+    }
+    // steps2: 绘制线段
+    this.ctx.strokeStyle = lineColor;
+    this.ctx.lineWidth = lineWidth;
+    if (lineStyle === 'solid') {
+      this.ctx.setLineDash([]); // 实线
+    } else if (lineStyle === 'dashed') {
+      this.ctx.setLineDash(lineDash); // 虚线
+    }
+    if (direction === 'ttb') { // 从上到下
+      for (let n = 0; n < lineCount; n++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(circleX, (n + 1) * (2 * circleRadius) + n * lineHeight + circleY);
+        this.ctx.lineTo(circleX, (n + 1) * (2 * circleRadius) + (n + 1) * lineHeight + circleY);
+        this.ctx.stroke();
+      }
+      this.ctx.closePath();
+    }else if (direction === 'ltr') { // 从左到右
+      for (let n = 0; n < lineCount; n++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo((n + 1) * (2 * circleRadius) + n * lineHeight + circleX, circleY);
+        this.ctx.lineTo((n + 1) * (2 * circleRadius) + (n + 1) * lineHeight + circleX, circleY);
+        this.ctx.stroke();
+      }
+      this.ctx.closePath();
+    }
+    this.ctx.restore();
   }
 
   /**
