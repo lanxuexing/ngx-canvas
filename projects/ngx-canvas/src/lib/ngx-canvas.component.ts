@@ -14,6 +14,7 @@ import {
   DrawProps,
   ImageProps,
   LineProps,
+  ProgressProps,
   PropagateProps,
   RectProps,
   StepsProps,
@@ -29,6 +30,7 @@ import {
       [style.--width]="width"
       [style.--height]="height"
       #canvas>
+      Your browser does not support the canvas tag.
     </canvas>
   `,
   styles: [`
@@ -67,6 +69,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
    */
   private initCanvas(): void {
     this.canvas = this.canvasRef.nativeElement;
+    if (!this.canvas.getContext) { return; }
     if (!this.options?.width || !this.options?.height || this.options?.views.length === 0) {
       return;
     }
@@ -103,8 +106,11 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
         // steps5：绘制线段
         this.drawLine(iterator);
       } else if (iterator.type === 'steps' || iterator.type === Types.steps) {
-         // steps6：绘制步骤条
-         this.drawSteps(iterator);
+        // steps6：绘制步骤条
+        this.drawSteps(iterator);
+      } else if (iterator.type === 'progress' || iterator.type === Types.progress) {
+        // steps7：绘制进度条
+        this.drawProgress(iterator);
       }
     }
     // steps6：绘制完成向外发射数据和事件
@@ -161,22 +167,54 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
    * @param borderWidth 矩形边框的宽
    * @param borderColor 矩形边框的颜色
    */
-  drawRadiusRect(x: number, y: number, w: number, h: number, r: number, borderWidth?: number, borderColor?: string): void {
-    const br = r / 2;
-    this.ctx.beginPath();
-    if (borderWidth > 0) { this.ctx.lineWidth = borderWidth; }
-    this.ctx.strokeStyle = borderColor;
-    this.ctx.moveTo(x + br, y); // 移动到左上角的点
-    this.ctx.lineTo(x + w - br, y);
-    this.ctx.arc(x + w - br, y + br, br, 2 * Math.PI * (3 / 4), 2 * Math.PI * (4 / 4));
-    this.ctx.lineTo(x + w, y + h - br);
-    this.ctx.arc(x + w - br, y + h - br, br, 0, 2 * Math.PI * (1 / 4));
-    this.ctx.lineTo(x + br, y + h);
-    this.ctx.arc(x + br, y + h - br, br, 2 * Math.PI * (1 / 4), 2 * Math.PI * (2 / 4));
-    this.ctx.lineTo(x, y + br);
-    this.ctx.arc(x + br, y + br, br, 2 * Math.PI * (2 / 4), 2 * Math.PI * (3 / 4));
-    this.ctx.closePath();
-    this.ctx.stroke();
+  drawRadiusRect(x: number, y: number, w: number, h: number, r: number | string, borderWidth?: number, borderColor?: string): void {
+    if (typeof (r) === 'number') {
+      const br = r / 2;
+      this.ctx.beginPath();
+      if (borderWidth > 0) { this.ctx.lineWidth = borderWidth; }
+      this.ctx.strokeStyle = borderColor;
+      this.ctx.moveTo(x + br, y); // 移动到左上角的点
+      this.ctx.lineTo(x + w - br, y);
+      this.ctx.arc(x + w - br, y + br, br, 2 * Math.PI * (3 / 4), 2 * Math.PI * (4 / 4));
+      this.ctx.lineTo(x + w, y + h - br);
+      this.ctx.arc(x + w - br, y + h - br, br, 0, 2 * Math.PI * (1 / 4));
+      this.ctx.lineTo(x + br, y + h);
+      this.ctx.arc(x + br, y + h - br, br, 2 * Math.PI * (1 / 4), 2 * Math.PI * (2 / 4));
+      this.ctx.lineTo(x, y + br);
+      this.ctx.arc(x + br, y + br, br, 2 * Math.PI * (2 / 4), 2 * Math.PI * (3 / 4));
+      this.ctx.closePath();
+      this.ctx.stroke();
+    } else if (typeof (r) === 'string') {
+      const temp = r.split(' ').map(Number);
+      let br = [];
+      if (temp.length === 1) {
+        // tslint:disable-next-line:no-shadowed-variable
+        br = [r, r, r, r].map(Number).map(x => x / 2);
+      } else if (temp.length === 2) {
+        // tslint:disable-next-line:no-shadowed-variable
+        br = [temp[1], temp[0], temp[1], temp[0]].map(Number).map(x => x / 2);
+      } else if (temp.length === 3) {
+        // tslint:disable-next-line:no-shadowed-variable
+        br = [temp[1], temp[0], temp[2], temp[0]].map(Number).map(x => x / 2);
+      } else if (temp.length === 4) {
+        // tslint:disable-next-line:no-shadowed-variable
+        br = [temp[1], temp[2], temp[3], temp[0]].map(Number).map(x => x / 2);
+      }
+      this.ctx.beginPath();
+      if (borderWidth > 0) { this.ctx.lineWidth = borderWidth; }
+      this.ctx.strokeStyle = borderColor;
+      this.ctx.moveTo(x + br[0], y); // 移动到左上角的点
+      this.ctx.lineTo(x + w - br[0], y);
+      this.ctx.arc(x + w - br[0], y + br[0], br[0], 2 * Math.PI * (3 / 4), 2 * Math.PI * (4 / 4));
+      this.ctx.lineTo(x + w, y + h - br[1]);
+      this.ctx.arc(x + w - br[1], y + h - br[1], br[1], 0, 2 * Math.PI * (1 / 4));
+      this.ctx.lineTo(x + br[2], y + h);
+      this.ctx.arc(x + br[2], y + h - br[2], br[2], 2 * Math.PI * (1 / 4), 2 * Math.PI * (2 / 4));
+      this.ctx.lineTo(x, y + br[3]);
+      this.ctx.arc(x + br[3], y + br[3], br[3], 2 * Math.PI * (2 / 4), 2 * Math.PI * (3 / 4));
+      this.ctx.closePath();
+      this.ctx.stroke();
+    }
   }
 
   /**
@@ -187,7 +225,8 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
   drawText(data: TextProps): void {
     const {
       top = 0, left = 0, fontSize = 16, color = '#000', baseLine = 'top', textAlign = 'left', content, opacity = 1,
-      width, lineNum = 1, lineHeight = 0, fontWeight = 'normal', fontStyle = 'normal', fontFamily = 'Microsoft YaHei'
+      width, lineNum = 1, lineHeight = 0, fontWeight = 'normal', fontStyle = 'normal', fontFamily = 'Microsoft YaHei',
+      indentWidth = 0
     } = data;
     this.ctx.save();
     this.ctx.beginPath();
@@ -198,7 +237,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
     this.ctx.fillStyle = color;
     let textWidth = this.ctx.measureText(content).width;
     const textArr = [];
-    if (textWidth > width) {
+    if (textWidth > (indentWidth > 0 ? width - indentWidth : width)) { // 首行缩进最大宽度校验
       let fillText = '';
       let line = 1;
       for (let i = 0; i <= content.length - 1; i += 1) { // 将文字转为数组
@@ -225,7 +264,11 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       textArr.push(content);
     }
     textArr.forEach((item, index) => {
-      this.ctx.fillText(item, left, top + (lineHeight || fontSize) * index);
+      if (indentWidth && index === 0) { // 首行缩进
+        this.ctx.fillText(item, left + indentWidth, top + (lineHeight || fontSize) * index);
+      } else {
+        this.ctx.fillText(item, left, top + (lineHeight || fontSize) * index);
+      }
     });
     this.ctx.restore();
   }
@@ -288,9 +331,9 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.ctx.save();
       this.ctx.globalAlpha = opacity;
       this.ctx.fillStyle = backgroundColor;
-      if (borderRadius > 0) {
+      if (borderRadius > 0 || (borderRadius && borderRadius !== 0)) {
         // 画圆角矩形
-        this.drawRadiusRect(x, y, blockWidth, height, borderRadius);
+        this.drawRadiusRect(x, y, blockWidth, height, borderRadius, borderWidth, borderColor);
         this.ctx.fill();
       } else {
         this.ctx.fillRect(x, y, blockWidth, height);
@@ -305,7 +348,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.ctx.lineWidth = borderWidth;
       if (borderRadius > 0) {
         // 画圆角矩形边框
-        this.drawRadiusRect(x, y, blockWidth, height, borderRadius);
+        this.drawRadiusRect(x, y, blockWidth, height, borderRadius, borderWidth, borderColor);
         this.ctx.stroke();
       } else {
         this.ctx.strokeRect(x, y, blockWidth, height);
@@ -320,95 +363,113 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
   /**
    * @description 绘制步骤条
    * @links https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/arc
-   * @param circleX 圆心x轴坐标，距离画布左边的距离
-   * @param circleY 圆心x轴坐标，距离画布顶部的距离
-   * @param circleRadius 圆的半径
-   * @param circleLineWidth 圆的画笔宽度
-   * @param circleStyle 圆的样式：dashed 空心  solid 实心
-   * @param circleColor 圆的画笔颜色
-   * @param lineWidth 线段的宽度
-   * @param lineHeight 线段的高度
-   * @param lineColor 线段的画笔颜色
-   * @param lineDash 线段的样式
-   * @param lineCount 线段的数量
-   * @param direction 方向
+   * @param data 步骤条数据对象
+   * @param speed 叠加因子
    */
   drawSteps(data: StepsProps): void {
     const {
-      circleX, circleY, circleRadius = 5, circleLineWidth = 1, circleStyle = 'dashed', circleColor = '#000',
-      lineWidth = 1, lineHeight, lineColor = '#000', lineStyle = 'solid', lineDash = [2, 2], lineCount = 1,
-      direction = 'ttb'
+      left = 0, top = 0, r = 5, startAngle = 0, endAngle = Math.PI * 2,
+      strokeColor = '#CCCCCC', mode = 'fill', lineWidth = 1,
+      unfinishedColor = '#FF8478', processColor = '#3DA8F5', finishedColor = '#9ED979',
+      cableColor = '#EBEBEB', direction = 'column', lists = []
+    } = data;
+    if (lists.length === 0) { return; }
+    let speed = direction === 'column' ? top : left;
+    const spacing = lists[0].spacing || 50;
+    // 循环遍历绘制图像
+    for (let i = 0; i < lists.length; i++) {
+      this.ctx.save();
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = strokeColor;
+      this.ctx.lineWidth = lineWidth;
+      // 绘制圆
+      if (direction === 'column') {
+        this.ctx.arc(left, speed, r, startAngle, endAngle);
+      } else if (direction === 'row') {
+        this.ctx.arc(speed, top, r, startAngle, endAngle);
+      }
+      if (mode === 'none') {
+        this.ctx.stroke();
+      } else {
+        // 根据状态填充颜色
+        switch (lists[i].status) {
+          case 0: // 未完成
+            mode === 'fill' ? this.ctx.fillStyle = unfinishedColor : this.ctx.strokeStyle = unfinishedColor;
+            break;
+          case 1: // 进行中
+            mode === 'fill' ? this.ctx.fillStyle = processColor : this.ctx.strokeStyle = processColor;
+            break;
+          case 2: // 已完成
+            mode === 'fill' ? this.ctx.fillStyle = finishedColor : this.ctx.strokeStyle = finishedColor;
+            break;
+        }
+        mode === 'fill' ? this.ctx.fill() : this.ctx.stroke();
+      }
+      this.ctx.closePath();
+      // 绘制圆之间的连线
+      this.ctx.beginPath();
+      this.ctx.strokeStyle = cableColor;
+      // 画圆之间的连线
+      if (i !== lists.length - 1) {
+        if (direction === 'column') {
+          this.ctx.moveTo(left, speed + r); // 起始位置
+          this.ctx.lineTo(left, speed + spacing - r); // 停止位置
+        } else if (direction === 'row') {
+          this.ctx.moveTo(speed + r, top); // 起始位置
+          this.ctx.lineTo(speed + spacing - r, top); // 停止位置
+        }
+      }
+      this.ctx.stroke();
+      this.ctx.closePath();
+      if (direction === 'column') {
+        speed += lists[i].spacing ? lists[i].spacing : spacing;
+      } else if (direction === 'row') {
+        speed += lists[i].spacing ? lists[i].spacing : spacing;
+      }
+      this.ctx.restore();
+    }
+  }
+
+  /**
+   * @description 绘制进度条
+   * @linkshttps://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/lineTo
+   * @param data 进度条数据对象
+   */
+  drawProgress(data: ProgressProps): void {
+    const {
+      startX = 0, startY = 0, endX = 0, endY = 0, lineWidth = 12, linecap = 'round', percent = 0, fromColor = '#ccc', toColor = '#46b684',
+      fontLineWidth = 1, fontColor = '#4a4a4a', fontSize = 16, fontWeight = 'normal', fontStyle = 'normal', fontFamily = 'Microsoft YaHei',
+      info = '', infoMarginLeft = 10
     } = data;
     this.ctx.save();
-    // steps1: 绘制小圆点
-    this.ctx.lineWidth = circleLineWidth;
-    if (circleStyle === 'dashed') {
-      this.ctx.strokeStyle = circleColor;
-    } else if (circleStyle === 'solid') {
-      this.ctx.fillStyle = circleColor;
-    }
-    if (direction === 'ttb') { // 从上到下
-      for (let n = 0; n <= lineCount; n++) {
-        this.ctx.beginPath();
-        this.ctx.arc(
-          circleX,
-          n * (2 * circleRadius) + n * lineHeight + circleRadius + circleY,
-          circleRadius,
-          0,
-          Math.PI * 2,
-          false
-        );
-        if (circleStyle === 'dashed') {
-          this.ctx.stroke(); // 空心
-        } else if (circleStyle === 'solid') {
-          this.ctx.fill(); // 实心
-        }
-        this.ctx.closePath();
-      }
-    } else if (direction === 'ltr') { // 从左到右
-      for (let n = 0; n <= lineCount; n++) {
-        this.ctx.beginPath();
-        this.ctx.arc(
-          n * (2 * circleRadius) + n * lineHeight + circleRadius + circleX,
-          circleY,
-          circleRadius,
-          0,
-          Math.PI * 2,
-          false
-        );
-        if (circleStyle === 'dashed') {
-          this.ctx.stroke(); // 空心
-        } else if (circleStyle === 'solid') {
-          this.ctx.fill(); // 实心
-        }
-        this.ctx.closePath();
-      }
-    }
-    // steps2: 绘制线段
-    this.ctx.strokeStyle = lineColor;
+    // 首先绘制背景
+    this.ctx.beginPath();
     this.ctx.lineWidth = lineWidth;
-    if (lineStyle === 'solid') {
-      this.ctx.setLineDash([]); // 实线
-    } else if (lineStyle === 'dashed') {
-      this.ctx.setLineDash(lineDash); // 虚线
-    }
-    if (direction === 'ttb') { // 从上到下
-      for (let n = 0; n < lineCount; n++) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(circleX, (n + 1) * (2 * circleRadius) + n * lineHeight + circleY);
-        this.ctx.lineTo(circleX, (n + 1) * (2 * circleRadius) + (n + 1) * lineHeight + circleY);
-        this.ctx.stroke();
-      }
-      this.ctx.closePath();
-    }else if (direction === 'ltr') { // 从左到右
-      for (let n = 0; n < lineCount; n++) {
-        this.ctx.beginPath();
-        this.ctx.moveTo((n + 1) * (2 * circleRadius) + n * lineHeight + circleX, circleY);
-        this.ctx.lineTo((n + 1) * (2 * circleRadius) + (n + 1) * lineHeight + circleX, circleY);
-        this.ctx.stroke();
-      }
+    this.ctx.strokeStyle = fromColor;
+    this.ctx.lineCap = linecap;
+    this.ctx.lineTo(startX, startY);
+    this.ctx.lineTo(endX, endY);
+    this.ctx.stroke();
+    this.ctx.closePath();
+    // 然后绘制进度
+    if (percent > 0) {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = lineWidth; // 设置线宽
+      this.ctx.strokeStyle = toColor; // 画笔颜色
+      this.ctx.lineTo(startX, startY);
+      this.ctx.lineTo(startX + percent, endY);
+      this.ctx.stroke();
       this.ctx.closePath();
     }
+    // 最后绘制变动的数字
+    this.ctx.beginPath();
+    this.ctx.lineWidth = fontLineWidth;
+    this.ctx.fillStyle = fontColor;
+    this.ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
+    // tslint:disable-next-line:radix
+    this.ctx.fillText(info ? info : parseInt(String(percent / (endX - startX))) + '%', endX + infoMarginLeft, endY + lineWidth);
+    this.ctx.fill();
+    this.ctx.closePath();
     this.ctx.restore();
   }
 

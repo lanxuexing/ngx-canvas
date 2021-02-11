@@ -44,6 +44,7 @@ export interface TextProps {
   fontWeight?: number | string; // 文字加粗
   fontStyle?: string; // 文字样式
   fontFamily?: string; // 文字字体
+  indentWidth?: number; // 首行缩进宽度
 }
 
 /**
@@ -75,7 +76,7 @@ export interface RectProps {
   borderWidth?: number; // 边框宽度
   backgroundColor?: string; // 背景颜色
   borderColor?: string; // 边框颜色
-  borderRadius?: number; // 圆角
+  borderRadius?: number | string; // 圆角
   opacity?: number; // 透明度
 }
 
@@ -84,19 +85,52 @@ export interface RectProps {
  */
 export interface StepsProps {
   type: string | Types; // 类型
-  circleX: number; // 圆心X轴坐标
-  circleY: number; // 圆心Y轴坐标
-  lineHeight: number; // 线段的高度
-  lineCount: number; // 线段的数量
-  circleRadius?: number; // 圆的半径
-  circleLineWidth?: number; // 圆的画笔宽度
-  circleStyle?: 'dashed' | 'solid'; // 圆的样式
-  circleColor?: string; // 圆的画笔颜色
-  lineWidth?: number; // 线段的宽度
-  lineColor?: string; // 线段的样式
-  lineStyle?: 'dashed' | 'solid'; // 线段的样式
-  lineDash?: number[]; // 虚线段间距
-  direction?: string; // 方向
+  left: number; // 圆弧的x轴坐标。
+  top: number; // 圆弧的y轴坐标
+  r?: number; // 圆弧的半径
+  lineWidth?: number; // 画笔的宽度
+  startAngle?: number; // 圆弧的起始点
+  endAngle?: number; // 圆弧的终点
+  strokeColor?: string; // 画笔的颜色
+  mode?: 'fill' | 'stroke' | 'none'; // 颜色填充模式
+  unfinishedColor?: string; // 未完成的颜色
+  processColor?: string; // 进行中的颜色
+  finishedColor?: string; // 已完成的颜色
+  cableColor?: string; // 连接线的颜色
+  lists: StepsListProps[]; // 基础数据
+  direction?: 'column' | 'row'; // 方向
+}
+
+/**
+ * 步骤条的基础数据
+ */
+export interface StepsListProps {
+  status?: 0 | 1 | 2; // 当前的状态
+  spacing?: number; // 圆与圆的间距
+}
+
+/**
+ * 绘制进度条数据对象
+ */
+export interface ProgressProps {
+  type: string | Types; // 类型
+  startX: number; // 开始坐标X
+  startY: number; // 开始坐标Y
+  endX: number; // 结束坐标X
+  endY: number; // 结束坐标Y
+  percent: number; // 当前进度
+  lineWidth?: number; // 进度条线宽
+  linecap?: 'butt' | 'round' | 'square'; // 进度条线段末端形状
+  fromColor?: string; // 进度条背景色
+  toColor?: string; // 进度条颜色
+  fontLineWidth?: number; // 文字的线宽
+  fontColor?: string; // 文字颜色
+  fontSize?: number; // 文字大小
+  fontWeight?: number | string; // 文字粗细
+  fontStyle?: string; // 文字样式
+  fontFamily?: string; // 文字字体
+  info?: string; // 显示的信息
+  infoMarginLeft?: number; // 信息距离进度条的左边距
 }
 
 /**
@@ -107,7 +141,8 @@ export enum Types {
   'text',
   'line',
   'rect',
-  'steps'
+  'steps',
+  'progress'
 }
 
 /**
