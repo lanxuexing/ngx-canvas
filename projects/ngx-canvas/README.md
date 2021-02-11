@@ -200,7 +200,7 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 
 | ImageProps       | Type              | Required    | Description                                         | Default              |
 | ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
-| type             | `string`          | required    | Type of drawing.                                    | Fixed value 'image'  |
+| type             | `string | Types`  | required    | Type of drawing.                                    | Fixed value 'image'  |
 | url              | `string`          | required    | Picture path or remote address.                     | null                 |
 | top              | `number`          | required    | Y-axis coordinate in the destination canvas.        | 0                    |
 | left             | `number`          | required    | X-axis coordinate in the destination canvas.        | 0                    |
@@ -214,14 +214,15 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 
 | TextProps        | Type              | Required    | Description                                         | Default              |
 | ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
-| type             | `string`          | required    | Type of drawing.                                    | Fixed value 'text'   |
+| type             | `string | Types`  | required    | Type of drawing.                                    | Fixed value 'text'   |
 | top              | `number`          | required    | Y-axis coordinate in the destination canvas.        | 0                    |
 | left             | `number`          | required    | X-axis coordinate in the destination canvas.        | 0                    |
 | content          | `string`          | required    | Text string to render into the context.             | null                 |
 | fontSize         | `number`          | optional    | Font size.                                          | 16                   |
-| baseLine         | `string`          | optional    | Current text baseline used when drawing text.       | '#000'               |
-| textAlign        | `string`          | optional    | Current text alignment used when drawing text.      | 'top'                |
-| opacity          | `number`          | optional    | Font transparency.                                  | 'left'               |
+| color            | `string`          | optional    | Font color.                                         | '#000'               |
+| baseLine         | `string`          | optional    | Current text baseline used when drawing text.       | 'top'                |
+| textAlign        | `string`          | optional    | Current text alignment used when drawing text.      | 'left'               |
+| opacity          | `number`          | optional    | Font transparency.                                  | 1                    |
 | width            | `number`          | optional    | Maximum text width.                                 | null                 |
 | lineNum          | `number`          | optional    | Maximum Text lines.                                 | 1                    |
 | lineHeight       | `number`          | optional    | Font line height.                                   | 0                    |
@@ -233,7 +234,7 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 
 | LineProps        | Type              | Required    | Description                                         | Default              |
 | ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
-| type             | `string`          | required    | Type of drawing.                                    | Fixed value 'line'   |
+| type             | `string | Types`  | required    | Type of drawing.                                    | Fixed value 'line'   |
 | startX           | `number`          | required    | X-axis coordinate of the line's start point.        | null                 |
 | startY           | `number`          | required    | Y-axis coordinate of the line's start point.        | null                 |
 | endX             | `number`          | required    | X-axis coordinate of the line's end point.          | null                 |
@@ -247,7 +248,7 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 
 | RectProps        | Type              | Required    | Description                                         | Default              |
 | ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
-| type             | `string`          | required    | Type of drawing.                                    | Fixed value 'rect'   |
+| type             | `string | Types`  | required    | Type of drawing.                                    | Fixed value 'rect'   |
 | width            | `number`          | required    | Rectangle's width.                                  | 0                    |
 | height           | `number`          | required    | Rectangle's height.                                 | null                 |
 | x                | `number`          | required    | X-axis coordinate of the rectangle's start point.   | null                 |
@@ -266,20 +267,53 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 
 | StepsProps       | Type              | Required    | Description                                         | Default              |
 | ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
-| type             | `string`          | required    | Type of drawing.                                    | Fixed value 'steps'  |
-| circleX          | `number`          | required    | Horizontal coordinate of the arc's center.          | null                 |
-| circleY          | `number`          | required    | Vertical coordinate of the arc's center.            | null                 |
-| lineHeight       | `number`          | required    | Height number of line.                              | null                 |
-| lineCount        | `number`          | required    | Total number of line.                               | 1                    |
-| circleRadius     | `number`          | optional    | Text string to render into the context.             | 5                    |
-| circleLineWidth  | `number`          | optional    | Sets the thickness of lines.                        | 1                    |
-| circleStyle      | `string`          | optional    | Sets the line dash pattern used when stroking lines.| 'dashed'             |
-| circleColor      | `string`          | optional    | Specifies the color to use for the strokes.         | '#000'               |
-| lineWidth        | `string`          | optional    | Sets the thickness of lines.                        | 1                    |
-| lineColor        | `string`          | optional    | Specifies the color to use for the strokes.         | '#000'               |
-| lineStyle        | `string`          | optional    | Radius of rectangle's border.                       | 'solid'              |
-| lineDash         | `number[]`        | optional    | Sets the line dash pattern used when stroking lines.| [2,2]                |
-| direction        | `string`          | optional    | Specifies the direction of steps.                   | 'ttb'                |
+| type             | `string | Types`  | required    | Type of drawing.                                    | Fixed value 'steps'  |
+| left             | `number`          | required    | X-axis coordinate of the first circle start point.  | 0                    |
+| top              | `number`          | required    | Y-axis coordinate of the first circle start point.  | 0                    |
+| r                | `number`          | optional    | The arc's radius. Must be positive.                 | 5                    |
+| lineWidth        | `number`          | optional    | Sets the thickness of lines.                        | 1                    |
+| startAngle       | `number`          | optional    | The angle at which the arc starts in radians.       | 0                    |
+| endAngle         | `number`          | optional    | The angle at which the arc ends in radians.         | Math.PI * 2          |
+| strokeColor      | `string`          | optional    | Specifies the color to use for the strokes.         | '#CCCCCC'            |
+| mode             | `string`          | optional    | Brush color fill mode.                              | 'fill'               |
+| unfinishedColor  | `string`          | optional    | The color of the unfinished stroke.                 | '#FF8478'            |
+| processColor     | `string`          | optional    | The color of the stroke in progress.                | '#3DA8F5'            |
+| finishedColor    | `string`          | optional    | Finished stroke color.                              | '#9ED979'            |
+| cableColor       | `string`          | optional    | The stroke color of the connecting line.            | '#EBEBEB'            |
+| lists            | `StepsListProps[]`| optional    | Basic data element of steps.                        | '[]'                 |
+| direction        | `string`          | optional    | Specifies the direction of steps.                   | 'column'             |
+
+
+---
+
+| StepsListProps   | Type              | Required    | Description                                         | Default              |
+| ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
+| status           | `number`          | optional    | The current state value of the step bar.            | 0                    |
+| spacing          | `number`          | optional    | The spacing between circles.                        | 50                   |
+
+
+---
+
+| ProgressProps    | Type              | Required    | Description                                         | Default              |
+| ---------------- | ----------------- | ----------- | --------------------------------------------------- | -------------------- |
+| type             | `string | Types`  | required    | Type of drawing.                                    | Fixed value 'progress'|
+| startX           | `number`          | required    | X-axis coordinate of the progress's start point.    | 0                    |
+| startY           | `number`          | required    | Y-axis coordinate of the progress's start point.    | 0                    |
+| endX             | `number`          | required    | X-axis coordinate of the progress's end point.      | 0                    |
+| endY             | `number`          | required    | Y-axis coordinate of the progress's end point.      | 0                    |
+| percent          | `number`          | required    | Current progress value.                             | 0                    |
+| lineWidth        | `number`          | optional    | Width of the stroke.                                | 12                   |
+| linecap          | `number`          | optional    | Shape used to draw the end points of lines.         | 'round'              |
+| fromColor        | `number`          | optional    | Background color.                                   | '#ccc'               |
+| toColor          | `number`          | optional    | Activated color.                                    | '#46b684'            |
+| fontLineWidth    | `number`          | optional    | Width of the stroke.                                | 1                    |
+| fontColor        | `number`          | optional    | Font color.                                         | '#4a4a4a'            |
+| fontSize         | `number`          | optional    | Font size.                                          | 16                   |
+| fontWeight       | `number`          | optional    | Font weight.                                        | 'normal'             |
+| fontStyle        | `number`          | optional    | Font style.                                         | 'normal'             |
+| fontFamily       | `number`          | optional    | Font family.                                        | 'Microsoft YaHei'    |
+| info             | `number`          | optional    | Value display the end of the progress.              | ''                   |
+| infoMarginLeft   | `number`          | optional    | Left margin.                                        | 10                   |
 
 ---
 
