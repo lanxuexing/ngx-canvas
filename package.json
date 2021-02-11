@@ -1,6 +1,6 @@
 {
   "name": "ngx-canvas",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "author": "lanxuexing",
   "description": "A simple yet powerful canvas component for Angular (>=2) 🚀",
