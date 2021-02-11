@@ -8,7 +8,8 @@ import {
   RectProps,
   TextProps,
   StepsProps,
-  Types
+  Types,
+  ProgressProps
 } from 'ngx-canvas';
 
 @Component({
@@ -90,18 +91,29 @@ export class AppComponent implements OnInit {
         }
       }
     ];
-    const steps: StepsProps[] = [{
-      type: Types.steps,
-      circleX: 48,
-      circleY: 530,
-      lineHeight: 80,
-      lineCount: 3,
-      lineColor: '#FFF',
-      circleColor: '#FFF',
-      direction: 'ltr',
-      circleStyle: 'solid',
-      lineStyle: 'solid'
-    }];
+    const steps: StepsProps[] = [
+      {
+        type: Types.steps,
+        left: 140,
+        top: 530,
+        direction: 'row',
+        lists: [
+          { status: 2, spacing: 50 },
+          { status: 1, spacing: 50 },
+          { status: 0, spacing: 50 }
+        ]
+      }
+    ];
+    const progress: ProgressProps[] = [
+      {
+        type: Types.progress,
+        startX: 140,
+        startY: 560,
+        endX: 240,
+        endY: 560,
+        percent: 60
+      }
+    ];
     this.options = {
       width: 375,
       height: 667,
@@ -111,7 +123,8 @@ export class AppComponent implements OnInit {
         ...txts,
         ...lines,
         ...rects,
-        ...steps
+        ...steps,
+        ...progress
       ],
       extra: 'Extend the params and return after drawing.'
     };
