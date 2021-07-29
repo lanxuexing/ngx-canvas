@@ -18,7 +18,7 @@ import {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  options: DrawProps;
+  options: DrawProps; // config opts
   dataUrl: string;
 
   @ViewChild('ngxCanvas') ngxCanvas: NgxCanvasComponent;
