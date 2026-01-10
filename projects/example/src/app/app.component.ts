@@ -60,6 +60,18 @@ export class AppComponent implements OnInit {
         fontSize: 48,
         fontWeight: '800',
         color: '#FFF'
+      },
+      {
+        type: 'text',
+        top: 600,
+        left: 20,
+        content: "Lorem Ipsum is simply dummy text of the typeset ting and printing industry. Lorem Ipsum has been the industry's standard dummy",
+        fontSize: 16,
+        lineHeight: 20,
+        width: 335,
+        lineNum: 3,
+        wordBreak: 'break-word',
+        color: '#FFF'
       }
     ];
     const lines: LineProps[] = [

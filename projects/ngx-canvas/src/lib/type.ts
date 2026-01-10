@@ -45,6 +45,7 @@ export interface TextProps {
   fontStyle?: string; // 文字样式
   fontFamily?: string; // 文字字体
   indentWidth?: number; // 首行缩进宽度
+  wordBreak?: 'break-all' | 'break-word'; // 单词换行模式
 }
 
 /**

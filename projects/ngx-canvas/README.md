@@ -229,6 +229,8 @@ Notice that you will need to import the `NgxCanvasModule` into other modules as 
 | fontWeight       | `number`          | optional    | Font weight.                                        | 'normal'             |
 | fontStyle        | `string`          | optional    | Font style.                                         | 'normal'             |
 | fontFamily       | `string`          | optional    | Font family.                                        | 'Microsoft YaHei'    |
+| indentWidth      | `number`          | optional    | Indent width of the first line.                     | 0                    |
+| wordBreak        | `string`          | optional    | Word break mode ('break-all' \| 'break-word').      | 'break-all'          |
 
 --- 
 

@@ -17,12 +17,7 @@
     ],
     "paths": {
       "ngx-canvas": [
-        "dist/ngx-canvas/ngx-canvas",
-        "dist/ngx-canvas"
-      ],
-      "ngx-canvas/*": [
-        "dist/ngx-canvas/ngx-canvas/*",
-        "dist/ngx-canvas"
+        "projects/ngx-canvas/src/public-api.ts"
       ]
     }
   }

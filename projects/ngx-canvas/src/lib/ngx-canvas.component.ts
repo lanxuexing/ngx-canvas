@@ -226,7 +226,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
     const {
       top = 0, left = 0, fontSize = 16, color = '#000', baseLine = 'top', textAlign = 'left', content, opacity = 1,
       width, lineNum = 1, lineHeight = 0, fontWeight = 'normal', fontStyle = 'normal', fontFamily = 'Microsoft YaHei',
-      indentWidth = 0
+      indentWidth = 0, wordBreak = 'break-all'
     } = data;
     this.ctx.save();
     this.ctx.beginPath();
@@ -243,13 +243,22 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       for (let i = 0; i <= content.length - 1; i += 1) { // 将文字转为数组
         fillText += content[i];
         if (this.ctx.measureText(fillText).width >= width) {
+          let lineText = fillText;
+          if (wordBreak === 'break-word' && line < lineNum) {
+            const lastSpaceIndex = fillText.lastIndexOf(' ');
+            if (lastSpaceIndex > -1) {
+              lineText = fillText.substring(0, lastSpaceIndex + 1);
+              const currentLineStartIndex = i - fillText.length + 1;
+              i = currentLineStartIndex + lastSpaceIndex;
+            }
+          }
           if (line === lineNum) {
             if (i !== content.length - 1) {
-              fillText = `${fillText.substring(0, fillText.length - 1)}...`;
+              lineText = `${lineText.substring(0, lineText.length - 1)}...`;
             }
           }
           if (line <= lineNum) {
-            textArr.push(fillText);
+            textArr.push(lineText);
           }
           fillText = '';
           line += 1;
@@ -331,7 +340,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.ctx.save();
       this.ctx.globalAlpha = opacity;
       this.ctx.fillStyle = backgroundColor;
-      if (borderRadius > 0 || (borderRadius && borderRadius !== 0)) {
+      if ((typeof borderRadius === 'number' && borderRadius > 0) || (typeof borderRadius === 'string' && borderRadius)) {
         // 画圆角矩形
         this.drawRadiusRect(x, y, blockWidth, height, borderRadius, borderWidth, borderColor);
         this.ctx.fill();
@@ -346,7 +355,7 @@ export class NgxCanvasComponent implements AfterViewInit, OnDestroy, OnChanges {
       this.ctx.globalAlpha = opacity;
       this.ctx.fillStyle = borderColor;
       this.ctx.lineWidth = borderWidth;
-      if (borderRadius > 0) {
+      if ((typeof borderRadius === 'number' && borderRadius > 0) || (typeof borderRadius === 'string' && borderRadius)) {
         // 画圆角矩形边框
         this.drawRadiusRect(x, y, blockWidth, height, borderRadius, borderWidth, borderColor);
         this.ctx.stroke();
